@@ -41,3 +41,9 @@ exports.create = (user) => {
             role: user.role
         });
 }
+
+exports.selectUsers = () => {
+    return knex
+        .select('*')
+        .from('users');
+}

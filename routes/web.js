@@ -5,22 +5,22 @@ let authValidator = require('../validators/AuthValidator');
 let passport = require('passport');
 let permissionsMiddleware = require('../controllers/PermissionsMiddleware');
 
-router.get('/', homepageController.index, permissionsMiddleware.checkAuthenticated);
+router.get('/', homepageController.index, permissionsMiddleware.Authenticated);
 
 // Authentication routes
 router.get('/login', authController.login);
 router.get('/register', authController.register);
 
-router.get('/dashboardUsers',  permissionsMiddleware.checkAuthenticated,  permissionsMiddleware.showDashBoard, homepageController.dashboardUsers);
-router.get('/usersList', permissionsMiddleware.checkAuthenticated, permissionsMiddleware.showUsers, homepageController.usersList);
+router.get('/dashboardUsers',  permissionsMiddleware.Authenticated,  permissionsMiddleware.acccessDashBoardUsers, homepageController.dashboardUsers);
+router.get('/usersList', permissionsMiddleware.Authenticated, permissionsMiddleware.accessUsersList, homepageController.usersList);
 
 
 router.post('/register', authValidator.store , authController.store);
 
 router.post('/login', passport.authenticate('local', { failureRedirect: '/login-fail', successRedirect: '/protected' }));
-router.get('/protected', (req, res) => {
-  res.send('Usuario logueado con éxito');
-});
+
+router.get('/protected', permissionsMiddleware.redirectLogin);
+
 router.get('/login-fail', (req, res) => {
   res.send('El usuario no tiene una sesión válida');
 });

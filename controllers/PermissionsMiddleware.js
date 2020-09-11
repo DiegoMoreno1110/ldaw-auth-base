@@ -1,4 +1,4 @@
-exports.checkAuthenticated = (req, res, next) => {
+exports.Authenticated = (req, res, next) => {
     if(req.isAuthenticated()) {
       return next();
     }else {
@@ -6,14 +6,9 @@ exports.checkAuthenticated = (req, res, next) => {
     }
   };
   
-exports.checkNotAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-      return res.redirect("/");
-    }
-    next();
-};
 
-exports.showDashBoard = (req, res, next) =>  {
+
+exports.acccessDashBoardUsers = (req, res, next) =>  {
     if(req.user.role ==1 || req.user.role ==2){
         next()
     }else{
@@ -21,10 +16,18 @@ exports.showDashBoard = (req, res, next) =>  {
     }
 }
 
-exports.showUsers = (req, res, next) =>  {
+exports.accessUsersList = (req, res, next) =>  {
     if(req.user.role ==2){
         next()
     }else{
         return res.send("No puedes acceder");
+    }
+}
+
+exports.redirectLogin = (req, res, next) => {
+    if(req.user.role == 1){
+        return res.redirect('/dashboardUsers');
+    }else if(req.user.role == 2){
+        return res.redirect('/usersList');
     }
 }

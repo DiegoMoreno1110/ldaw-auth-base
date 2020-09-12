@@ -12,6 +12,7 @@ exports.acccessDashBoardUsers = (req, res, next) =>  {
     if(req.user.role ==1 || req.user.role ==2){
         next()
     }else{
+        res.status(403);
         return res.send("No puedes acceder");
     }
 }
@@ -20,6 +21,7 @@ exports.accessUsersList = (req, res, next) =>  {
     if(req.user.role ==2){
         next()
     }else{
+        res.status(403);
         return res.send("No puedes acceder");
     }
 }
